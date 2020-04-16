@@ -1,0 +1,20 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  min-width: 100%;
+  *{
+    box-sizing: border-box;
+  }
+  .leftSidebar,.rightSidebar{
+    min-width: 250px;
+    height: 100vh;
+    padding: 10px 15px;
+  }
+  .leftSidebar{
+    border-right: 1px solid #222222;
+  }
+  .rightSidebar{
+    border-left: 1px solid #222222;
+  }
+}
+
