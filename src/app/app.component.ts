@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
   }
 
   private buildSidebar(sidebar): void {
-    console.log(sidebar);
     this.leftSidebarHost.viewContainerRef.clear();
     this.rightSidebarHost.viewContainerRef.clear();
 

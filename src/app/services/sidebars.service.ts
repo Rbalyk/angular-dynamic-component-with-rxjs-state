@@ -60,30 +60,8 @@ export class SidebarsService {
     }).pipe(tap((form: any) => this.updateOutsideFormState(form)));
   }
 
-  updateComponent(component: any) {
-    switch (component.target) {
-      case 'leftSidebar':
-        this.sidebarsState.settings.leftSidebar.components.forEach((item) => {
-          if (item.id === component.id) {
-            item = component;
-          }
-        });
-        break;
-      default:
-        break;
-    }
-
-    this.sidebarsState.inspector = true;
-
-    this.updateInsideFormState();
-  }
-
   updateOutsideFormState(sidebar: SidebarsInterface) {
     this.sidebarsState = sidebar;
     this.sidebarsStateSubject.next(sidebar);
-  }
-
-  private updateInsideFormState() {
-    this.sidebarsStateSubject.next(this.sidebarsState);
   }
 }

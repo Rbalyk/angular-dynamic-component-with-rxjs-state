@@ -24,34 +24,4 @@ export class DynamicComponentService extends DynamicComponentList {
     };
   }
 
-  getDefaultPaletteComponents(): Observable<any> {
-    return of([
-      {
-        title: 'LeftSidebar',
-        components: [
-          {
-            type: 'Cat',
-            title: 'Cat Dynamic Component',
-          },
-          {
-            type: 'Dog',
-            title: 'Dog Dynamic Component',
-          }
-        ]
-      },
-      {
-        title: 'RightSidebar',
-        components: [
-          {
-            type: 'Bird',
-            title: 'Bird Dynamic Component',
-          },
-          {
-            type: 'Fish',
-            title: 'Fish Dynamic Component',
-          }
-        ]
-      },
-    ]);
-  }
 }
