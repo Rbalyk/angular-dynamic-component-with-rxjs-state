@@ -1,15 +1,19 @@
-import {Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {switchMap} from "rxjs/operators";
+import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+
 import {LeftSidebarHostDirective} from './directives/left-sidebar-host.directive';
 import {RightSidebarHostDirective} from './directives/right-sidebar-host.directive';
 import {DynamicComponentService} from './services/dynamic-component.service';
-import {Subscription} from 'rxjs';
 import {SidebarsService} from './services/sidebars.service';
-
+import {SidebarsInterface} from "./interfaces/sidebars.interface";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
 
@@ -17,6 +21,10 @@ export class AppComponent implements OnInit {
   @ViewChild(RightSidebarHostDirective, {static: true}) rightSidebarHost: RightSidebarHostDirective;
   @ViewChild('leftSidebar', { static: true }) leftSidebarRef: ElementRef;
   @ViewChild('rightSidebar', { static: true }) rightSidebarRef: ElementRef;
+
+  sidebars: SidebarsInterface;
+  leftSidebarComponents: any;
+  rightSidebarComponents: any;
 
   private subscription = new Subscription();
 
@@ -27,14 +35,33 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(){
-    const sidebarsStateStream$ = this.sidebarsService.getDefaultSidebarsState().subscribe((sidebar: any) => {
+    const sidebarsStateStream$ = this.sidebarsService.getDefaultSidebarsState().pipe(
+      switchMap(() => {
+        return this.sidebarsService.sidebarsState$;
+      })
+    ).subscribe((sidebar: any) => {
       this.buildSidebar(sidebar);
     });
-
     this.subscription.add(sidebarsStateStream$);
   }
 
+  drop(event) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.sidebarsService.updateOutsideSidebarState(this.sidebars);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+      this.sidebarsService.updateOutsideSidebarState(this.sidebars);
+    }
+  }
+
   private buildSidebar(sidebar): void {
+    this.sidebars = sidebar;
+    this.leftSidebarComponents = sidebar.settings.leftSidebar.components;
+    this.rightSidebarComponents = sidebar.settings.rightSidebar.components;
     this.leftSidebarHost.viewContainerRef.clear();
     this.rightSidebarHost.viewContainerRef.clear();
 
@@ -61,6 +88,7 @@ export class AppComponent implements OnInit {
 
     const componentRef = host.viewContainerRef.createComponent(componentFactory);
     (componentRef.instance as any).leftSidebarRef = this.leftSidebarRef;
+    (componentRef.instance as any).rightSidebarRef = this.rightSidebarRef;
   }
 
 }

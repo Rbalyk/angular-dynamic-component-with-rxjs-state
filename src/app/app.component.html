@@ -1,9 +1,21 @@
 <div class="container">
-  <div class="leftSidebar" #leftSidebar>
+  <div class="leftSidebar drag-box"
+       #leftSidebar
+       id="leftSidebarComponents"
+       cdkDropList
+       cdkDropListConnectedTo="rightSidebarComponents"
+       [cdkDropListData]="leftSidebarComponents"
+       (cdkDropListDropped)="drop($event)">
     <ng-template cs-left-sidebar-host></ng-template>
   </div>
 
-  <div class="rightSidebar" #rightSidebar>
+  <div  class="rightSidebar drag-box"
+        #rightSidebar
+        id="rightSidebarComponents"
+        cdkDropList
+        cdkDropListConnectedTo="leftSidebarComponents"
+        [cdkDropListData]="rightSidebarComponents"
+        (cdkDropListDropped)="drop($event)">
     <ng-template cs-right-sidebar-host></ng-template>
   </div>
 </div>

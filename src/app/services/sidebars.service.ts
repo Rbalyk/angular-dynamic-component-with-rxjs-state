@@ -57,11 +57,11 @@ export class SidebarsService {
           ]
         }
       }
-    }).pipe(tap((form: any) => this.updateOutsideFormState(form)));
+    }).pipe(tap((sidebars: any) => this.updateOutsideSidebarState(sidebars)));
   }
 
-  updateOutsideFormState(sidebar: SidebarsInterface) {
+  updateOutsideSidebarState(sidebar: SidebarsInterface) {
     this.sidebarsState = sidebar;
-    this.sidebarsStateSubject.next(sidebar);
+    this.sidebarsStateSubject.next(this.sidebarsState);
   }
 }

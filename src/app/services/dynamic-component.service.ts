@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
 
 import { DynamicComponentList } from './dynamic-component-list';
 

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-bird',
   templateUrl: './bird.component.html',
-  styleUrls: ['./bird.component.scss']
+  styleUrls: ['./bird.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BirdComponent implements OnInit {
 
